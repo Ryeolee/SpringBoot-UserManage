@@ -2,7 +2,7 @@ package com.user.usermanage.user.controller;
 
 
 import com.user.usermanage.user.dto.SignUpRequestDto;
-import com.user.usermanage.user.dto.SignUpResponseDto;
+import com.user.usermanage.user.dto.ResponseDto;
 import com.user.usermanage.user.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/user/auth")
 public class AuthController {
     private final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
@@ -21,9 +21,9 @@ public class AuthController {
     public AuthController(AuthService authService){ this.authService = authService; }
 
     @PostMapping(value = "/sign-up")
-    public SignUpResponseDto signUp( @Validated  @RequestBody SignUpRequestDto signUpRequest){
+    public ResponseDto signUp(@Validated  @RequestBody SignUpRequestDto signUpRequest){
 
-        SignUpResponseDto signUpResponseDto = authService.signUp(signUpRequest);
+        ResponseDto signUpResponseDto = authService.signUp(signUpRequest);
         
         LOGGER.info("회원가입 완료");
         

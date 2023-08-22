@@ -2,7 +2,7 @@ package com.user.usermanage.user.service.Impl;
 
 import com.user.usermanage.user.common.SignUpResponse;
 import com.user.usermanage.user.dto.SignUpRequestDto;
-import com.user.usermanage.user.dto.SignUpResponseDto;
+import com.user.usermanage.user.dto.ResponseDto;
 import com.user.usermanage.user.entity.User;
 import com.user.usermanage.user.repository.UserRepository;
 import com.user.usermanage.user.service.AuthService;
@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public SignUpResponseDto signUp(SignUpRequestDto signUpRequest) {
+    public ResponseDto signUp(SignUpRequestDto signUpRequest) {
 
         User user;
 
@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         User savedUser = userRepository.save(user);
-        SignUpResponseDto signUpResponse = new SignUpResponseDto();
+        ResponseDto signUpResponse = new ResponseDto();
 
         if (!savedUser.getIdentifier().isEmpty()) {
             LOGGER.info("정상 처리 완료");
@@ -54,13 +54,13 @@ public class AuthServiceImpl implements AuthService {
 
     }
 
-    private void setSuccessResult(SignUpResponseDto result){
+    private void setSuccessResult(ResponseDto result){
         result.setSuccess(true);
         result.setCode(SignUpResponse.SUCCESS.getCode());
         result.setMsg(SignUpResponse.SUCCESS.getMsg());
     }
 
-    private void setFailResult(SignUpResponseDto result){
+    private void setFailResult(ResponseDto result){
         result.setSuccess(false);
         result.setCode(SignUpResponse.FAIL.getCode());
         result.setMsg(SignUpResponse.FAIL.getMsg());

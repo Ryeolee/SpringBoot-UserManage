@@ -20,6 +20,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/sign-up").permitAll();
+                .antMatchers("/api/user/auth/sign-up", "/api/verifiy").permitAll();
     }
 }

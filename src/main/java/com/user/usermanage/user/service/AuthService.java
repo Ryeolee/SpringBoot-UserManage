@@ -1,10 +1,10 @@
 package com.user.usermanage.user.service;
 
 import com.user.usermanage.user.dto.SignUpRequestDto;
-import com.user.usermanage.user.dto.SignUpResponseDto;
+import com.user.usermanage.user.dto.ResponseDto;
 
 public interface AuthService {
 
 
-     SignUpResponseDto signUp(SignUpRequestDto signUpRequest);
+     ResponseDto signUp(SignUpRequestDto signUpRequest);
 }
