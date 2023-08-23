@@ -1,6 +1,7 @@
 package com.user.usermanage.user.controller;
 
 
+import com.user.usermanage.user.Exception.CustomException;
 import com.user.usermanage.user.dto.ResponseDto;
 import com.user.usermanage.user.service.VerifyService;
 import org.slf4j.Logger;
@@ -23,9 +24,9 @@ public class VerifiyController {
 
 
     @GetMapping()
-    public ResponseDto identifierVerify(@Validated @RequestParam String identifier){
+    public ResponseDto identifierVerify(@Validated @RequestParam String identifier) throws CustomException {
 
-        ResponseDto identifierVerifyResponseDto = verifyService.idenfierVerify(identifier);
+        ResponseDto identifierVerifyResponseDto = verifyService.identifierVerify(identifier);
 
         LOGGER.info("아이디 중복 확인 완료");
 

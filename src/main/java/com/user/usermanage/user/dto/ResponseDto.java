@@ -1,20 +1,14 @@
 package com.user.usermanage.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Data
 public class ResponseDto {
 
-    private boolean success;
     private int code;
-    private String msg;
-
-
+    private String message;
 
 }

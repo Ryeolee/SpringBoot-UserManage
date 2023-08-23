@@ -1,7 +1,7 @@
 package com.user.usermanage.user.service.Impl;
 
-import com.user.usermanage.user.common.IdentifierVerifyResponse;
-import com.user.usermanage.user.controller.VerifiyController;
+import com.user.usermanage.user.Exception.Constants;
+import com.user.usermanage.user.Exception.CustomException;
 import com.user.usermanage.user.dto.ResponseDto;
 import com.user.usermanage.user.entity.User;
 import com.user.usermanage.user.repository.UserRepository;
@@ -9,8 +9,10 @@ import com.user.usermanage.user.service.VerifyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -25,33 +27,24 @@ public class VerfiyServicecImpl implements VerifyService {
         this.userRepository = userRepository;
     }
     @Override
-    public ResponseDto idenfierVerify(String identifier) {
+    public ResponseDto identifierVerify(String identifier) throws CustomException {
 
-        User user = userRepository.findByIdentifier(identifier);
+       Optional<User> user = userRepository.findByIdentifier(identifier);
 
         ResponseDto idenfierVerifyResponse = new ResponseDto();
 
         LOGGER.info(String.valueOf(user));
 
 
-        if(user != null){
-            setFailResult(idenfierVerifyResponse);
-        }else{
-            setSuccessResult(idenfierVerifyResponse);
+        if(user.isPresent()){
+           throw new CustomException(Constants.ExceptionClass.VERIFY, HttpStatus.BAD_REQUEST,"아이디가 중복됩니다.");
         }
+
+        idenfierVerifyResponse.setCode(200);
+        idenfierVerifyResponse.setMessage("아이디 사용 가능");
         return idenfierVerifyResponse;
     }
 
 
-    private void setSuccessResult(ResponseDto result){
-        result.setSuccess(true);
-        result.setCode(IdentifierVerifyResponse.SUCCESS.getCode());
-        result.setMsg(IdentifierVerifyResponse.SUCCESS.getMsg());
-    }
 
-    private void setFailResult(ResponseDto result){
-        result.setSuccess(false);
-        result.setCode(IdentifierVerifyResponse.FAIL.getCode());
-        result.setMsg(IdentifierVerifyResponse.FAIL.getMsg());
-    }
 }
