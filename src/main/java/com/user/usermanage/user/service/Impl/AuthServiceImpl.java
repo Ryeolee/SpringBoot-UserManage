@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -93,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
                 .code(200)
                 .message("OK")
                 .data(SignInResponseDto.Data.builder()
-                        .accessToken(jwtTokenProvider.createAccessToken(user.get().getUserId(),user.get().getRole()))
+                        .accessToken(jwtTokenProvider.createAccessToken(user.get().getIdentifier(),user.get().getRole()))
                         .refreshToken(refreshToken)
                         .build())
                 .build();
