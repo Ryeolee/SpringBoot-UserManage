@@ -38,7 +38,9 @@ public class JwtTokenProvider {
 
 
     private String secretKey = "secretKeysdfdsfasgawegvaegvaergvaegv";
-    private final long accessTokenTime = 1000L * 60 * 60; // 1시간 토큰 유효
+   // private final long accessTokenTime = 1000L * 60 * 60; // 1시간 토큰 유효
+
+    private final long accessTokenTime = 30L * 24L * 60 * 60 * 1000; // 1시간 토큰 유효
     private final long refreshTokenTIme = 30L * 24L * 60 * 60 * 1000; // 1달 토큰 유효
 
     @PostConstruct

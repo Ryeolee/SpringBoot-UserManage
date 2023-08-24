@@ -1,8 +1,10 @@
 package com.user.usermanage.user.service;
 
+import com.user.usermanage.user.entity.User;
+
 public interface UserDetailsService {
 
-    String loadUserByUserusername(String userIdentifier);
+    User loadUserByUserusername(String userIdentifier);
 
 
 

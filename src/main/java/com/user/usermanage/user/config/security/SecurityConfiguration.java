@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         webSecurity
                 .ignoring()
-                .antMatchers("/api/user/auth/sign-up", "/api/user/auth/sign-in","/api/verifiy");
+                .antMatchers("/api/user/auth/sign-up", "/api/user/auth/sign-in","/api/verifiy","/api/verifiy/findIdentifier");
 
     }
 }

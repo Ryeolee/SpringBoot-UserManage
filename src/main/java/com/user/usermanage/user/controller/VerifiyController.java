@@ -3,6 +3,7 @@ package com.user.usermanage.user.controller;
 
 import com.user.usermanage.user.Exception.CustomException;
 import com.user.usermanage.user.dto.ResponseDto;
+import com.user.usermanage.user.dto.FindIdentifierResponseDto;
 import com.user.usermanage.user.service.VerifyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,17 @@ public class VerifiyController {
     public ResponseDto identifierVerify(@Validated @RequestParam String identifier) throws CustomException {
 
         ResponseDto identifierVerifyResponseDto = verifyService.identifierVerify(identifier);
+
+        LOGGER.info("아이디 중복 확인 완료");
+
+        return identifierVerifyResponseDto;
+    }
+
+
+    @GetMapping("/findIdentifier")
+    public FindIdentifierResponseDto identifierFind(@Validated @RequestParam String email) throws CustomException {
+
+        FindIdentifierResponseDto identifierVerifyResponseDto = verifyService.identifierFind(email);
 
         LOGGER.info("아이디 중복 확인 완료");
 

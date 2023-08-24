@@ -3,6 +3,7 @@ package com.user.usermanage.user.service.Impl;
 import com.user.usermanage.user.Exception.Constants;
 import com.user.usermanage.user.Exception.CustomException;
 import com.user.usermanage.user.dto.ResponseDto;
+import com.user.usermanage.user.dto.FindIdentifierResponseDto;
 import com.user.usermanage.user.entity.User;
 import com.user.usermanage.user.repository.UserRepository;
 import com.user.usermanage.user.service.VerifyService;
@@ -45,6 +46,18 @@ public class VerfiyServicecImpl implements VerifyService {
         return idenfierVerifyResponse;
     }
 
+    @Override
+    public FindIdentifierResponseDto identifierFind(String email) throws CustomException {
+
+        User user = userRepository.getByEmail(email);
+
+        FindIdentifierResponseDto findIdentifierResponseDto = new FindIdentifierResponseDto();
+
+        findIdentifierResponseDto.setCode(200);
+        findIdentifierResponseDto.setMessage("OK");
+        findIdentifierResponseDto.setIdentifier(user.getIdentifier());
+        return findIdentifierResponseDto;
+    }
 
 
 }

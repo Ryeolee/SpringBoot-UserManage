@@ -1,5 +1,6 @@
 package com.user.usermanage.user.service.Impl;
 
+import com.user.usermanage.user.entity.User;
 import com.user.usermanage.user.repository.UserRepository;
 import com.user.usermanage.user.service.UserDetailsService;
 import org.slf4j.Logger;
@@ -19,11 +20,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     @Override
-    public String loadUserByUserusername(String userIdentifier) {
+    public User loadUserByUserusername(String userIdentifier) {
         LOGGER.info("loadUserByUsernam 수행");
 
 
-        LOGGER.info(userRepository.getByIdentifier(userIdentifier));
+
         return userRepository.getByIdentifier(userIdentifier);
     }
 
