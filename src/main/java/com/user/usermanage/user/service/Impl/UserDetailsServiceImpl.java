@@ -2,9 +2,11 @@ package com.user.usermanage.user.service.Impl;
 
 import com.user.usermanage.user.entity.User;
 import com.user.usermanage.user.repository.UserRepository;
-import com.user.usermanage.user.service.UserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,13 +22,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     @Override
-    public User loadUserByUserusername(String userIdentifier) {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.info("loadUserByUsernam 수행");
-
-
-
-        return userRepository.getByIdentifier(userIdentifier);
+        return userRepository.getByIdentifier(username);
     }
-
-
 }

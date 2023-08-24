@@ -31,7 +31,6 @@ public class ChangeController {
 
         ResponseDto responseDto = changeService.changeIdentifier(changeIdentifierRequest);
 
-
         return responseDto;
     }
 }

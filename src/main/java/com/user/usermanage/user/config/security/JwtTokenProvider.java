@@ -90,9 +90,7 @@ public class JwtTokenProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserIdentifier(token));
 
-
-        LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}"
-        );
+        LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}");
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
