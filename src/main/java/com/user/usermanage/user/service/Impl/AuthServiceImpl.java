@@ -105,9 +105,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseDto logout(Long userId) throws CustomException {
 
-        ValueOperations<String, String> redis = redisTemplate.opsForValue();
-
-        LOGGER.info(String.valueOf(userId));
 
         deleteValueByKey(String.valueOf(userId));
 
