@@ -16,7 +16,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @Table
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,34 +42,4 @@ public class User extends BaseEntity implements UserDetails {
     @Column(nullable = false)
     private String nickname;
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public String getUsername() {
-        return this.identifier;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

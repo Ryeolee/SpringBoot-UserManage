@@ -49,13 +49,13 @@ public class VerfiyServicecImpl implements VerifyService {
     @Override
     public FindIdentifierResponseDto identifierFind(String email) throws CustomException {
 
-        User user = userRepository.getByEmail(email);
+        Optional<User> user = userRepository.getByEmail(email);
 
         FindIdentifierResponseDto findIdentifierResponseDto = new FindIdentifierResponseDto();
 
         findIdentifierResponseDto.setCode(200);
         findIdentifierResponseDto.setMessage("OK");
-        findIdentifierResponseDto.setIdentifier(user.getIdentifier());
+        findIdentifierResponseDto.setIdentifier(user.get().getIdentifier());
         return findIdentifierResponseDto;
     }
 

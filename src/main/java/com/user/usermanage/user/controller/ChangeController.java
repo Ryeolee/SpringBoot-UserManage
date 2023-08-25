@@ -1,12 +1,15 @@
 package com.user.usermanage.user.controller;
 
 
-import com.user.usermanage.user.dto.ChangeIdentifierRequestDto;
+import com.user.usermanage.user.config.security.CustomUser;
+import com.user.usermanage.user.dto.ChangeNicknameRequestDto;
+import com.user.usermanage.user.dto.ChangePasswordRequestDto;
 import com.user.usermanage.user.dto.ResponseDto;
 import com.user.usermanage.user.service.ChangeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,10 +29,24 @@ public class ChangeController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ChangeController.class);
 
-    @PostMapping("/identifier")
-    public ResponseDto changeIdentifier(@Validated @RequestBody ChangeIdentifierRequestDto changeIdentifierRequest){
+    @PostMapping("/nickname")
+    public ResponseDto changeNickname (
+            @AuthenticationPrincipal CustomUser customUser,
+            @Validated @RequestBody ChangeNicknameRequestDto changeIdentifierRequest) throws RuntimeException {
 
-        ResponseDto responseDto = changeService.changeIdentifier(changeIdentifierRequest);
+
+        ResponseDto responseDto = changeService.changeNickname(changeIdentifierRequest,customUser.getUserId());
+
+        return responseDto;
+    }
+
+    @PostMapping("/password")
+    public ResponseDto changePassword (
+            @AuthenticationPrincipal CustomUser customUser,
+            @Validated @RequestBody ChangePasswordRequestDto changePasswordRequest) throws RuntimeException {
+
+
+        ResponseDto responseDto = changeService.changePassword(changePasswordRequest,customUser.getUserId());
 
         return responseDto;
     }

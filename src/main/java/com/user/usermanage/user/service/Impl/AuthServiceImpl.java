@@ -94,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
                 .code(200)
                 .message("OK")
                 .data(SignInResponseDto.Data.builder()
-                        .accessToken(jwtTokenProvider.createAccessToken(user.get().getIdentifier(),user.get().getRole()))
+                        .accessToken(jwtTokenProvider.createAccessToken(user.get().getUserId(),user.get().getRole()))
                         .refreshToken(refreshToken)
                         .build())
                 .build();

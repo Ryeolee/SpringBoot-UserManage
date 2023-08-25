@@ -26,8 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/user/change/identifier").permitAll()
-      //          .anyRequest().authenticated() // 나머지 모든 요청도 인증이 필요
+                .antMatchers("/api/user/change/identifier").authenticated()
+
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
@@ -41,7 +41,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         webSecurity
                 .ignoring()
-                .antMatchers("/api/user/auth/sign-up", "/api/user/auth/sign-in","/api/verifiy","/api/verifiy/findIdentifier");
+                .antMatchers(  "/api/user/auth/sign-up",
+                        "/api/user/auth/sign-in",
+                        "/api/verifiy",
+                        "/api/verifiy/findIdentifier");
 
     }
 }

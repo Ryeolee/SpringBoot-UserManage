@@ -53,9 +53,9 @@ public class JwtTokenProvider {
     }
 
 
-    public String createAccessToken(String identifier, String roles) {            // 토큰 생성
+    public String createAccessToken(Long userId, String roles) {            // 토큰 생성
         LOGGER.info("[createToken] 토큰 생성 시작");
-        Claims claims = Jwts.claims().setSubject(identifier);
+        Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
         claims.put("roles", roles);
 
         Date now = new Date();
@@ -88,21 +88,30 @@ public class JwtTokenProvider {
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
         LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 시작");
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserIdentifier(token));
+        Long userId = this.getUserId(token);
+
+        CustomUser customUser = CustomUser
+                .builder()
+                .userId(userId)
+                .build();
+
+
+    //    UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserIdentifier(token));
 
         LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}");
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(customUser, "", customUser.getAuthorities());
     }
 
 
-    public String getUserIdentifier(String token) {                  // 회원 정보 추출
-        LOGGER.info("[getUsername] 토큰 기반 회원 구별 정보 추출");
+    public Long getUserId(String token) {                  // 회원 정보 추출
+
         String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
                 .getSubject();
-        LOGGER.info("[getUsername] 토큰 기반 회원 구별 정보 추출 완료, info : {}");
+
+        Long userId = Long.valueOf(info);
 
 
-        return info;
+        return userId;
     }
 
 
