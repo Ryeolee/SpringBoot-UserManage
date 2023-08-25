@@ -120,7 +120,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {              // 헤더에서 토큰 가져오기
         LOGGER.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
 
-        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("X-AUTH-TOKEN").substring(7);
     }
 
 

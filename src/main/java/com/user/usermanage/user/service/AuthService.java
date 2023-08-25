@@ -14,5 +14,5 @@ public interface AuthService {
 
      SignInResponseDto signIn(SignInRequestDto signInRequestDto) throws CustomException;
 
-
+     ResponseDto logout(Long userId) throws CustomException;
 }

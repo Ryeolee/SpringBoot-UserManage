@@ -37,6 +37,8 @@ public class ChangeController {
 
         ResponseDto responseDto = changeService.changeNickname(changeIdentifierRequest,customUser.getUserId());
 
+        LOGGER.info("닉네임변경 완료");
+
         return responseDto;
     }
 
@@ -47,7 +49,7 @@ public class ChangeController {
 
 
         ResponseDto responseDto = changeService.changePassword(changePasswordRequest,customUser.getUserId());
-
+        LOGGER.info("비밀번호변경 완료");
         return responseDto;
     }
 }

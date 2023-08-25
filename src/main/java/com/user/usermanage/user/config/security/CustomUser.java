@@ -19,9 +19,6 @@ public class CustomUser implements UserDetails {
 
     Long userId;
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>();

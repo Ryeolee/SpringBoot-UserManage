@@ -57,15 +57,12 @@ public class AuthServiceImpl implements AuthService {
         ResponseDto signUpResponse = new ResponseDto();
 
         if (!savedUser.getIdentifier().isEmpty()) {
-            LOGGER.info("정상 처리 완료");
 
             signUpResponse.setCode(200);
             signUpResponse.setMessage("회원가입 완료");
 
         } else {
-            LOGGER.info("실패 처리 완료");
             throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.BAD_GATEWAY,"회원가입 실패");
-
         }
 
         return signUpResponse;
@@ -87,14 +84,13 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.BAD_REQUEST, "비밀번호가 옳바르지 않습니다.");
         }
 
-        String refreshToken = jwtTokenProvider.createRereshToken();
-
+        String refreshToken = "Bearer " +jwtTokenProvider.createRereshToken();
 
         SignInResponseDto signInResponseDto = SignInResponseDto.builder()
                 .code(200)
                 .message("OK")
                 .data(SignInResponseDto.Data.builder()
-                        .accessToken(jwtTokenProvider.createAccessToken(user.get().getUserId(),user.get().getRole()))
+                        .accessToken("Bearer " +jwtTokenProvider.createAccessToken(user.get().getUserId(),user.get().getRole()))
                         .refreshToken(refreshToken)
                         .build())
                 .build();
@@ -103,12 +99,27 @@ public class AuthServiceImpl implements AuthService {
 
         redis.set(String.valueOf(user.get().getUserId()), refreshToken);
 
-        LOGGER.info("레디스 토큰 장착 완료");
-
         return signInResponseDto;
     }
 
+    @Override
+    public ResponseDto logout(Long userId) throws CustomException {
+
+        ValueOperations<String, String> redis = redisTemplate.opsForValue();
+
+        LOGGER.info(String.valueOf(userId));
+
+        deleteValueByKey(String.valueOf(userId));
+
+        ResponseDto logoutResponse = new ResponseDto();
+        logoutResponse.setCode(200);
+        logoutResponse.setMessage("완료");
 
 
+        return logoutResponse;
+    }
 
+    public void deleteValueByKey(String key) {
+        redisTemplate.delete(key);
+    }
 }
