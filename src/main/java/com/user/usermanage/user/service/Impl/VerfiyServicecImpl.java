@@ -78,27 +78,16 @@ public class VerfiyServicecImpl implements VerifyService {
 
         ValueOperations<String, String> redis = redisTemplate.opsForValue();
 
-        LOGGER.info(email.getEmail());
-        mailSenderRunner.setTo(email.getEmail());
-
-
-
-
-
-        String verifyNumber = generateVerifyNumber();
-
-        redis.set(email.getEmail(),verifyNumber);
-        LOGGER.info("1");
-
-    //    redis.getAndExpire(email.getEmail(), Duration.ofSeconds(180));
-
-        setKeyExpiration(email.getEmail(),180);
-
-        LOGGER.info("2");
-
-
-
         try {
+
+            mailSenderRunner.setTo(email.getEmail());
+
+            String verifyNumber = generateVerifyNumber();
+
+            redis.set(email.getEmail(),verifyNumber);
+
+            setKeyExpiration(email.getEmail(),180);
+
 
             mailSenderRunner.sendEmail("인증번호", verifyNumber);
 
@@ -112,9 +101,7 @@ public class VerfiyServicecImpl implements VerifyService {
             verifyEmailResponse.setVerifyNumber(verifyNumber);
 
 
-
             return verifyEmailResponse;
-
 
 
         } catch (Exception e) {
@@ -124,6 +111,10 @@ public class VerfiyServicecImpl implements VerifyService {
         }
 
     }
+
+
+
+
 
 
     public static String generateVerifyNumber() {
