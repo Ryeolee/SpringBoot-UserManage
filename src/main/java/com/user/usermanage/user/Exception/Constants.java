@@ -5,8 +5,8 @@ public class Constants {
     public enum ExceptionClass {
 
        AUTH("auth"),
-       VERIFY("verify");
-
+       VERIFY("verify"),
+       CHANGE("change");
         private String exceptionClass;
 
         ExceptionClass(String exceptionClass) {

@@ -1,9 +1,11 @@
 package com.user.usermanage.user.controller;
 
 
+import com.user.usermanage.user.Exception.CustomException;
 import com.user.usermanage.user.config.security.CustomUser;
 import com.user.usermanage.user.dto.ChangeNicknameRequestDto;
 import com.user.usermanage.user.dto.ChangePasswordRequestDto;
+import com.user.usermanage.user.dto.ChangeTemporaryPasswordRequestDto;
 import com.user.usermanage.user.dto.ResponseDto;
 import com.user.usermanage.user.service.ChangeService;
 import org.slf4j.Logger;
@@ -50,6 +52,17 @@ public class ChangeController {
 
         ResponseDto responseDto = changeService.changePassword(changePasswordRequest,customUser.getUserId());
         LOGGER.info("비밀번호변경 완료");
+        return responseDto;
+    }
+
+
+    @PostMapping("/temporary-password")
+    public ResponseDto changeTemporaryPassword (
+            @Validated @RequestBody ChangeTemporaryPasswordRequestDto changeTemporaryPasswordRequestDto) throws CustomException, Exception {
+
+
+        ResponseDto responseDto = changeService.changeTemporaryPassword(changeTemporaryPasswordRequestDto);
+        LOGGER.info("임시 비밀번호 발급 완료");
         return responseDto;
     }
 }

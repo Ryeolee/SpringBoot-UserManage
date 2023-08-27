@@ -26,7 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/user/change/identifier").authenticated()
+                .antMatchers("/api/user/change//nickname","/api/user/change/password").authenticated()
 
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
@@ -46,7 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/verifiy",
                         "/api/verifiy/findIdentifier",
                         "/api/verifiy/email-issue",
-                        "/api/verifiy/email-verify"
+                        "/api/verifiy/email-verify",
+                "/api/user/change//temporary-password"
                 );
 
     }
