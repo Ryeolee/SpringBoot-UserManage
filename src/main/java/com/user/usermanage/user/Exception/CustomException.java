@@ -9,29 +9,39 @@ public class CustomException extends Exception{
 
 
     private Constants.ExceptionClass exceptionClass;
-    private HttpStatus httpStatus;
+    private HttpStatus httpStatus = HttpStatus.OK;
+    private int code;
 
-    public CustomException(Constants.ExceptionClass exceptionClass, HttpStatus httpStatus,
+    private String message;
+
+    public CustomException(Constants.ExceptionClass exceptionClass, int code,
                            String message) {
         super(exceptionClass.toString() + message);
         this.exceptionClass = exceptionClass;
-        this.httpStatus = httpStatus;
+        this.code = code;
+        this.message = message;
     }
 
     public Constants.ExceptionClass getExceptionClass() {
         return exceptionClass;
     }
 
-    public int getHttpStatusCode() {
-        return httpStatus.value();
+    public int getCode() {
+        return this.code;
     }
 
-    public String getHttpStatusType() {
-        return httpStatus.getReasonPhrase();
+    public String getMessage() {
+        return this.message;
     }
 
+//    public String getHttpStatusType() {
+//        return httpStatus.getReasonPhrase();
+//    }
+//
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
+
+
 
 }

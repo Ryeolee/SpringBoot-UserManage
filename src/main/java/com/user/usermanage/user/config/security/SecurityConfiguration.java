@@ -45,7 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/user/auth/sign-in",
                         "/api/verifiy",
                         "/api/verifiy/findIdentifier",
-                        "/api/verifiy/email-issue"
+                        "/api/verifiy/email-issue",
+                        "/api/verifiy/email-verify"
                 );
 
     }

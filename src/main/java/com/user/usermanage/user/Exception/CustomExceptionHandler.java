@@ -25,8 +25,8 @@ public class CustomExceptionHandler {
                 e.getMessage());
 
         Map<String, String> map = new HashMap<>();
-        map.put("error type", e.getHttpStatusType());
-        map.put("code", Integer.toString(e.getHttpStatusCode()));
+   //     map.put("error type", e.getHttpStatusType());
+        map.put("code", Integer.toString(e.getCode()));
         map.put("message", e.getMessage());
 
         return new ResponseEntity<>(map, responseHeaders, e.getHttpStatus());

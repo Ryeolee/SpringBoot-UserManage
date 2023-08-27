@@ -3,17 +3,13 @@ package com.user.usermanage.user.service.Impl;
 import com.user.usermanage.user.Exception.Constants;
 import com.user.usermanage.user.Exception.CustomException;
 import com.user.usermanage.user.config.email.MailSenderRunner;
-import com.user.usermanage.user.dto.ResponseDto;
-import com.user.usermanage.user.dto.FindIdentifierResponseDto;
-import com.user.usermanage.user.dto.VerifyEmailRequestDto;
-import com.user.usermanage.user.dto.VerifyEmailResponseDto;
+import com.user.usermanage.user.dto.*;
 import com.user.usermanage.user.entity.User;
 import com.user.usermanage.user.repository.UserRepository;
 import com.user.usermanage.user.service.VerifyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
@@ -52,7 +48,7 @@ public class VerfiyServicecImpl implements VerifyService {
 
 
         if(user.isPresent()){
-           throw new CustomException(Constants.ExceptionClass.VERIFY, HttpStatus.BAD_REQUEST,"아이디가 중복됩니다.");
+           throw new CustomException(Constants.ExceptionClass.VERIFY,404 ,"아이디가 중복됩니다.");
         }
 
         idenfierVerifyResponse.setCode(200);
@@ -74,19 +70,19 @@ public class VerfiyServicecImpl implements VerifyService {
     }
 
     @Override
-    public VerifyEmailResponseDto verifyEmail(VerifyEmailRequestDto email) throws CustomException {
+    public VerifyCodeResponseDto verifyCode(VerifyCodeRequestDto verifyCodeRequestDto) throws CustomException {
 
         ValueOperations<String, String> redis = redisTemplate.opsForValue();
 
         try {
 
-            mailSenderRunner.setTo(email.getEmail());
+            mailSenderRunner.setTo(verifyCodeRequestDto.getEmail());
 
             String verifyNumber = generateVerifyNumber();
 
-            redis.set(email.getEmail(),verifyNumber);
+            redis.set(verifyCodeRequestDto.getEmail(),verifyNumber);
 
-            setKeyExpiration(email.getEmail(),180);
+            setKeyExpiration(verifyCodeRequestDto.getEmail(),180);
 
 
             mailSenderRunner.sendEmail("인증번호", verifyNumber);
@@ -94,7 +90,7 @@ public class VerfiyServicecImpl implements VerifyService {
             LOGGER.info("이메일 전송 완료");
 
 
-            VerifyEmailResponseDto verifyEmailResponse = new VerifyEmailResponseDto();
+            VerifyCodeResponseDto verifyEmailResponse = new VerifyCodeResponseDto();
 
             verifyEmailResponse.setMessage("OK");
             verifyEmailResponse.setCode(200);
@@ -107,15 +103,37 @@ public class VerfiyServicecImpl implements VerifyService {
         } catch (Exception e) {
             // 이메일 전송에 실패한 경우에 대한 처리
             LOGGER.error("이메일 전송 실패: " + e.getMessage());
-            throw new CustomException(Constants.ExceptionClass.VERIFY,HttpStatus.FAILED_DEPENDENCY,"이메일 전송 실패");
+            throw new CustomException(Constants.ExceptionClass.VERIFY, 500,"이메일 전송 실패");
         }
 
     }
 
+    @Override
+    public ResponseDto verifyEmail(VerifyEmailRequestDto verifyEmailRequestDto) throws CustomException {
+
+        ValueOperations<String, String> redis = redisTemplate.opsForValue();
+
+        String code = redis.get(verifyEmailRequestDto.getEmail());
+
+        LOGGER.info(code);
+
+        if(code == null){
+            throw new CustomException(Constants.ExceptionClass.VERIFY,402,"검증 유효시간이 지났습니다.");
+        }
+
+        if(code.equals(verifyEmailRequestDto.getCode())){
+            ResponseDto verifyEmailResponse = new ResponseDto();
+
+            verifyEmailResponse.setCode(200);
+            verifyEmailResponse.setMessage("인증 성공");
+
+            return verifyEmailResponse;
 
 
+        }
 
-
+        throw new CustomException(Constants.ExceptionClass.VERIFY, 407," 코드가 옳바르지 않습니다.");
+    }
 
     public static String generateVerifyNumber() {
         Random random = new Random();

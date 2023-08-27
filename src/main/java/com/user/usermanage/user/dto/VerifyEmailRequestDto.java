@@ -3,6 +3,7 @@ package com.user.usermanage.user.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
@@ -14,5 +15,9 @@ import javax.validation.constraints.NotBlank;
 public class VerifyEmailRequestDto {
 
     @NotBlank
+    @Email
     String email;
+
+    @NotBlank
+    String code;
 }

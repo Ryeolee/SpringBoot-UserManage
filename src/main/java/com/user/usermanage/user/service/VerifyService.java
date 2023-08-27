@@ -1,10 +1,7 @@
 package com.user.usermanage.user.service;
 
 import com.user.usermanage.user.Exception.CustomException;
-import com.user.usermanage.user.dto.ResponseDto;
-import com.user.usermanage.user.dto.FindIdentifierResponseDto;
-import com.user.usermanage.user.dto.VerifyEmailRequestDto;
-import com.user.usermanage.user.dto.VerifyEmailResponseDto;
+import com.user.usermanage.user.dto.*;
 
 public interface VerifyService {
     ResponseDto identifierVerify(String identifier) throws CustomException;
@@ -12,5 +9,7 @@ public interface VerifyService {
     FindIdentifierResponseDto identifierFind(String email) throws  CustomException;
 
 
-    VerifyEmailResponseDto verifyEmail(VerifyEmailRequestDto email) throws  CustomException;
+    VerifyCodeResponseDto verifyCode(VerifyCodeRequestDto verifyCodeRequestDto) throws  CustomException;
+
+    ResponseDto verifyEmail(VerifyEmailRequestDto verifyEmailRequestDto) throws  CustomException;
 }

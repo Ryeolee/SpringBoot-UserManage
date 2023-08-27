@@ -132,16 +132,16 @@ public class JwtTokenProvider {
             return true;
         }  catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             LOGGER.info("잘못된 JWT 서명입니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.BAD_REQUEST,"잘못된 JWT 서명입니다." );
+            throw new CustomException(Constants.ExceptionClass.AUTH, 403,"잘못된 JWT 서명입니다." );
         } catch (ExpiredJwtException e) {
             LOGGER.info("만료된 JWT 토큰입니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED,"만료된 JWT 토큰입니다." );
+            throw new CustomException(Constants.ExceptionClass.AUTH, 417,"만료된 JWT 토큰입니다." );
         } catch (UnsupportedJwtException e) {
             LOGGER.info("지원되지 않는 JWT 토큰입니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.EXPECTATION_FAILED,"지원되지 않는 JWT 토큰입니다.");
+            throw new CustomException(Constants.ExceptionClass.AUTH, 420,"지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
             LOGGER.info("JWT 토큰이 잘못되었습니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.NO_CONTENT,"JWT 토큰이 잘못되었습니다.");
+            throw new CustomException(Constants.ExceptionClass.AUTH, 419 ,"JWT 토큰이 잘못되었습니다.");
         }
     }
 }

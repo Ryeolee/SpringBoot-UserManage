@@ -2,10 +2,7 @@ package com.user.usermanage.user.controller;
 
 
 import com.user.usermanage.user.Exception.CustomException;
-import com.user.usermanage.user.dto.ResponseDto;
-import com.user.usermanage.user.dto.FindIdentifierResponseDto;
-import com.user.usermanage.user.dto.VerifyEmailRequestDto;
-import com.user.usermanage.user.dto.VerifyEmailResponseDto;
+import com.user.usermanage.user.dto.*;
 import com.user.usermanage.user.service.VerifyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,18 +46,23 @@ public class VerifiyController {
 
 
     @PostMapping("/email-issue")
-    public VerifyEmailResponseDto verifyEmail(@Validated @RequestBody VerifyEmailRequestDto email) throws CustomException {
+    public VerifyCodeResponseDto verifyCode(@Validated @RequestBody VerifyCodeRequestDto verifyCodeRequestDto) throws CustomException {
 
-        VerifyEmailResponseDto verifyEmailResponseDto = verifyService.verifyEmail(email);
+        VerifyCodeResponseDto verifyCodeResponseDto = verifyService.verifyCode(verifyCodeRequestDto);
 
-      LOGGER.info("아이디 중복 확인 완료");
+      LOGGER.info("인증 코드 발급 완료");
+
+        return verifyCodeResponseDto;
+    }
+
+    @PostMapping("/email-verify")
+    public ResponseDto verifyEmail(@Validated @RequestBody VerifyEmailRequestDto verifyEmailRequestDto) throws CustomException {
+
+        ResponseDto verifyEmailResponseDto = verifyService.verifyEmail(verifyEmailRequestDto);
+
+        LOGGER.info("인증 코드 검증 완료");
 
         return verifyEmailResponseDto;
     }
-
-
-
-
-
 
 }

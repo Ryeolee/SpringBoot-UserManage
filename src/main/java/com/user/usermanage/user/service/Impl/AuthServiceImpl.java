@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
             signUpResponse.setMessage("회원가입 완료");
 
         } else {
-            throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.BAD_GATEWAY,"회원가입 실패");
+            throw new CustomException(Constants.ExceptionClass.AUTH, 500,"회원가입 실패");
         }
 
         return signUpResponse;
@@ -76,12 +76,12 @@ public class AuthServiceImpl implements AuthService {
         Optional<User> user = userRepository.findByIdentifier(signInRequestDto.getIdentifier());
 
         if(user.isEmpty()){
-            throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.BAD_REQUEST, "아이디가 옳바르지 않습니다.");
+            throw new CustomException(Constants.ExceptionClass.AUTH, 404, "아이디가 옳바르지 않습니다.");
         }
 
 
         if(!passwordEncoder.matches(signInRequestDto.getPassword(), user.get().getPassword())){
-            throw new CustomException(Constants.ExceptionClass.AUTH, HttpStatus.BAD_REQUEST, "비밀번호가 옳바르지 않습니다.");
+            throw new CustomException(Constants.ExceptionClass.AUTH, 405, "비밀번호가 옳바르지 않습니다.");
         }
 
         String refreshToken = "Bearer " +jwtTokenProvider.createRereshToken();

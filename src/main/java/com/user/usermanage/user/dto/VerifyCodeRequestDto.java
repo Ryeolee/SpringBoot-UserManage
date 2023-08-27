@@ -3,15 +3,16 @@ package com.user.usermanage.user.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
 @Getter
 @Setter
-public class VerifyEmailResponseDto {
+public class VerifyCodeRequestDto {
 
-    private int code;
-    private String message;
-    private String verifyNumber;
+    @NotBlank
+    String email;
 }
