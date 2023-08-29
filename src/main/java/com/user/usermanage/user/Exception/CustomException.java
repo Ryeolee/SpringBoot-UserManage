@@ -3,13 +3,10 @@ package com.user.usermanage.user.Exception;
 
 import org.springframework.http.HttpStatus;
 
-
 public class CustomException extends Exception{
 
-
-
     private Constants.ExceptionClass exceptionClass;
-    private HttpStatus httpStatus = HttpStatus.OK;
+    private HttpStatus httpStatus = HttpStatus.ACCEPTED;
     private int code;
 
     private String message;

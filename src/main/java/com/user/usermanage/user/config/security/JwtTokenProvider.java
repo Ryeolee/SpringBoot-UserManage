@@ -28,8 +28,6 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
-
-
     @Autowired
     JwtTokenProvider(UserDetailsService userDetailsService){
         this.userDetailsService = userDetailsService;
@@ -40,8 +38,10 @@ public class JwtTokenProvider {
     private String secretKey = "secretKeysdfdsfasgawegvaegvaergvaegv";
    // private final long accessTokenTime = 1000L * 60 * 60; // 1시간 토큰 유효
 
-    private final long accessTokenTime = 30L * 24L * 60 * 60 * 1000; // 1시간 토큰 유효
-    private final long refreshTokenTIme = 30L * 24L * 60 * 60 * 1000; // 1달 토큰 유효
+    private final long accessTokenTime = 1L * 60 * 1000; // 1분 토큰 유효
+ //   private final long refreshTokenTIme = 30L * 24L * 60 * 60 * 1000; // 1달 토큰 유효
+
+    private final long refreshTokenTIme = 1L * 60 * 1000 * 2; // 1달 토큰 유효
 
     @PostConstruct
     protected void init() {
@@ -96,9 +96,6 @@ public class JwtTokenProvider {
                 .build();
 
 
-    //    UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserIdentifier(token));
-
-        LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}");
         return new UsernamePasswordAuthenticationToken(customUser, "", customUser.getAuthorities());
     }
 
@@ -110,17 +107,20 @@ public class JwtTokenProvider {
 
         Long userId = Long.valueOf(info);
 
-
         return userId;
     }
 
 
-
-
-    public String resolveToken(HttpServletRequest request) {              // 헤더에서 토큰 가져오기
+    public String resolveAccessToken(HttpServletRequest request) {              // 헤더에서 토큰 가져오기
         LOGGER.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
 
-        return request.getHeader("X-AUTH-TOKEN").substring(7);
+        return request.getHeader("access").substring(7);
+    }
+
+    public String resolveRefreshToken(HttpServletRequest request) {              // 헤더에서 토큰 가져오기
+        LOGGER.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
+
+        return request.getHeader("refresh").substring(7);
     }
 
 
@@ -132,16 +132,15 @@ public class JwtTokenProvider {
             return true;
         }  catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             LOGGER.info("잘못된 JWT 서명입니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, 403,"잘못된 JWT 서명입니다." );
         } catch (ExpiredJwtException e) {
             LOGGER.info("만료된 JWT 토큰입니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, 417,"만료된 JWT 토큰입니다." );
         } catch (UnsupportedJwtException e) {
             LOGGER.info("지원되지 않는 JWT 토큰입니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, 420,"지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
             LOGGER.info("JWT 토큰이 잘못되었습니다.");
-            throw new CustomException(Constants.ExceptionClass.AUTH, 419 ,"JWT 토큰이 잘못되었습니다.");
         }
+        return false;
+
+
     }
 }

@@ -3,10 +3,7 @@ package com.user.usermanage.user.service.Impl;
 import com.user.usermanage.user.Exception.Constants;
 import com.user.usermanage.user.Exception.CustomException;
 import com.user.usermanage.user.config.security.JwtTokenProvider;
-import com.user.usermanage.user.dto.SignInRequestDto;
-import com.user.usermanage.user.dto.SignInResponseDto;
-import com.user.usermanage.user.dto.SignUpRequestDto;
-import com.user.usermanage.user.dto.ResponseDto;
+import com.user.usermanage.user.dto.*;
 import com.user.usermanage.user.entity.User;
 import com.user.usermanage.user.repository.UserRepository;
 import com.user.usermanage.user.service.AuthService;
@@ -95,9 +92,14 @@ public class AuthServiceImpl implements AuthService {
                         .build())
                 .build();
 
-        ValueOperations<String, String> redis = redisTemplate.opsForValue();
 
-        redis.set(String.valueOf(user.get().getUserId()), refreshToken);
+        LOGGER.info(user.get().getRole());
+
+
+        redisTemplate.opsForHash().put(jwtTokenProvider.createRereshToken(),"userId", String.valueOf(user.get().getUserId()));
+        redisTemplate.opsForHash().put(jwtTokenProvider.createRereshToken(),"role", String.valueOf(user.get().getRole()));
+
+
 
         return signInResponseDto;
     }
@@ -114,6 +116,33 @@ public class AuthServiceImpl implements AuthService {
 
 
         return logoutResponse;
+    }
+
+    @Override
+    public ReissueTokenResponseDto reissueToken(String refreshToken) throws CustomException {
+
+
+        if(!jwtTokenProvider.validateToken(refreshToken)){
+
+            throw new CustomException(Constants.ExceptionClass.AUTH, 406, "재로그인 해주세요.");
+
+
+        }
+
+        String userId = (String) redisTemplate.opsForHash().get(refreshToken, "userId");
+        String role = (String) redisTemplate.opsForHash().get(refreshToken, "role");
+
+        ReissueTokenResponseDto reissueTokenResponse = ReissueTokenResponseDto
+                .builder()
+                .code(200)
+                .message("OK")
+                .accessToken("Bearer " +jwtTokenProvider.createAccessToken(Long.valueOf(userId),role))
+                .refreshToken("Bearer " +refreshToken)
+                .build();
+
+        return reissueTokenResponse;
+
+
     }
 
     public void deleteValueByKey(String key) {

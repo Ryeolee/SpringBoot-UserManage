@@ -1,10 +1,7 @@
 package com.user.usermanage.user.service;
 
 import com.user.usermanage.user.Exception.CustomException;
-import com.user.usermanage.user.dto.SignInRequestDto;
-import com.user.usermanage.user.dto.SignInResponseDto;
-import com.user.usermanage.user.dto.SignUpRequestDto;
-import com.user.usermanage.user.dto.ResponseDto;
+import com.user.usermanage.user.dto.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface AuthService {
@@ -15,4 +12,6 @@ public interface AuthService {
      SignInResponseDto signIn(SignInRequestDto signInRequestDto) throws CustomException;
 
      ResponseDto logout(Long userId) throws CustomException;
+
+     ReissueTokenResponseDto reissueToken(String refreshToken) throws CustomException;
 }
