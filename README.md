@@ -3,7 +3,7 @@
 
 1. 회원가입        &nbsp;&nbsp;        완료
 2. 로그인(jwt, redis)      &nbsp;&nbsp;   완료 
-3. 토큰 재발급
+3. 토큰 재발급               &nbsp;&nbsp;  완료
 4. 아이디 찾기         &nbsp;&nbsp;  완료
 5. 닉네임 변경        &nbsp;&nbsp;   완료
 6. 임시비밀번호  &nbsp;&nbsp;  완료
